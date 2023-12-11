@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("record").innerText = savedScrore;
 });
 
-window.addEventListener('beforeunload', (event) => {
-  window.scrollTo(0, 0)
-})
+window.addEventListener("beforeunload", (event) => {
+  window.scrollTo(0, 0);
+});
 
 function changeDifficults() {
   const selectedElement = document.getElementById("difficult");
@@ -112,8 +112,21 @@ class Tetris {
       row,
       nextFigure,
       nextMatrix,
+      ghostColumn: column,
+      ghostRow: row,
     };
     this.tetArr.push(nextFigure);
+    this.calculateGhostPos();
+  }
+  calculateGhostPos() {
+    const tetObjRow = this.tetobj.row;
+    this.tetobj.row++;
+    while (this.checkOutBorders()) {
+      this.tetobj.row++;
+    }
+    this.tetobj.ghostRow = this.tetobj.row - 1;
+    this.tetobj.ghostColumn = this.tetobj.column;
+    this.tetobj.row = tetObjRow;
   }
 
   generationGameArea() {
@@ -126,11 +139,18 @@ class Tetris {
     }
   }
 
+  dropTetObj() {
+    this.tetobj.row = this.tetobj.ghostRow
+    this.stateTetris()
+  }
+
   down() {
     this.tetobj.row += 1;
     if (!this.checkOutBorders()) {
       this.tetobj.row -= 1;
       this.stateTetris();
+    } else {
+      this.calculateGhostPos();
     }
   }
 
@@ -138,6 +158,8 @@ class Tetris {
     this.tetobj.column -= 1;
     if (!this.checkOutBorders()) {
       this.tetobj.column += 1;
+    } else {
+      this.calculateGhostPos();
     }
   }
 
@@ -145,6 +167,8 @@ class Tetris {
     this.tetobj.column += 1;
     if (!this.checkOutBorders()) {
       this.tetobj.column -= 1;
+    } else {
+      this.calculateGhostPos();
     }
   }
 
@@ -160,8 +184,9 @@ class Tetris {
       allMatrxOfFig[name] = rotatedMatrix;
       if (!this.checkOutBorders()) {
         allMatrxOfFig[name] = matrix;
+      } else {
+        this.calculateGhostPos();
       }
-
     } else {
       name = this.tetobj.name;
       matrixSize = this.tetobj.matrix.length;
@@ -170,7 +195,9 @@ class Tetris {
       this.tetobj.matrix = rotatedMatrix;
 
       if (!this.checkOutBorders()) {
-        this.tetobj.matrix = matrix
+        this.tetobj.matrix = matrix;
+      } else {
+        this.calculateGhostPos();
       }
     }
   }
@@ -305,8 +332,8 @@ function gameOver() {
   alert("GAME OVER");
   stopDown();
   document.removeEventListener("keydown", swicthKey);
-  location.reload()
-  window.scrollTo(0, 0)
+  location.reload();
+  window.scrollTo(0, 0);
 }
 
 function setNewRecord() {
@@ -389,6 +416,9 @@ function swicthKey(e) {
     case "KeyW":
       moveRotate();
       break;
+    case "Space":
+      moveGhostPos();
+      break;
 
     default:
       break;
@@ -401,6 +431,39 @@ function paintInt() {
   renderNext();
   paintArea();
   paint();
+  paintGhost();
+}
+
+function moveGhostPos() {
+  tetris.dropTetObj()
+  paint()
+}
+
+function paintGhost() {
+  let matrixSize;
+  let name;
+  let matrix;
+  if (tetris.render === true) {
+    name = tetris.tetArr[tetris.tetArr.length - 2];
+    matrix = allMatrxOfFig[name];
+    matrixSize = matrix.length;
+  } else {
+    matrixSize = tetris.tetobj.matrix.length;
+    name = tetris.tetobj.name;
+    matrix = tetris.tetobj.matrix;
+  }
+
+  for (let row = 0; row < matrixSize; row++) {
+    for (let column = 0; column < matrixSize; column++) {
+      if (!matrix[row][column]) continue;
+      if (tetris.tetobj.ghostRow + row < 0) continue;
+      indexGhost = getIndexHtml(
+        row + tetris.tetobj.ghostRow,
+        column + tetris.tetobj.ghostColumn
+      );
+      cells[indexGhost].classList.add("ghost");
+    }
+  }
 }
 
 function renderNext() {

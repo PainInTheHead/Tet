@@ -59,6 +59,10 @@ body {
   background-color: rgba(126, 150, 221, 0.2);
 }
 
+.grid > div.ghost {
+    background-color: rgba(255, 255, 0, 0.9)
+}
+
 .grid > div.T {
   background-color: #360094;
   opacity: 0.8;
