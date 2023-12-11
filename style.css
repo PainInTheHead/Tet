@@ -16,19 +16,47 @@ body {
     display: grid;
     grid-template-columns: repeat(10, auto);
     grid-template-rows: repeat(20, auto);
-    width: 400px;
-    height: 800px;
-    margin: auto;
-    margin-bottom: 100px;
+    margin-right: 30px;
+    grid-row-gap: 0;
+    gap: 3px;
+    padding: 0;
+    border-radius: 5px;
+}
+
+
+.gridNext {
+    display: flex;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(4, auto);
+    border-radius: 5px;
+    gap: 3px;
+}
+
+.gridNext div{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(20, 20, 118);
+    border: 1px solid rgb(250, 22, 208);
+    border-radius: 5px;
+    background-color: rgba(126, 150, 221, 0.2);
+}
+
+.playfield h1 {
+    color: rgb(20, 20, 118);
+    margin-bottom: 10px;
 }
 
 .grid div{
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 
 
     background-color: rgb(20, 20, 118);
     border: 1px solid rgb(250, 22, 208);
+    border-radius: 5px;
+    background-color: rgba(126, 150, 221, 0.2);
 }
 
 .grid>div.T {
@@ -111,3 +139,43 @@ h2 {
     height: 100%;
     margin: 450px auto;
 }
+
+
+.gridNext>div.T {
+    background-color: aqua;
+}
+
+.gridNext>div.Q {
+    background-color: rgb(8, 71, 71);
+}
+
+.gridNext>div.I {
+    background-color: rgba(0, 255, 55, 0.727);
+}
+
+.gridNext>div.Z {
+    background-color: rgb(170, 0, 255);
+}
+
+.gridNext>div.S {
+    background-color: rgb(255, 0, 179);
+}
+
+.gridNext>div.J {
+    background-color: rgb(255, 47, 0);
+}
+
+.gridNext>div.L {
+    background-color: rgb(0, 255, 98);
+}
+
+.playfield {
+ display: flex;
+ justify-content: center;
+ flex-direction: row-reverse;
+}
+
+
+
+
+

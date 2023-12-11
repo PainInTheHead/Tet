@@ -9,27 +9,18 @@
   <body>
     <div class="formhard_con">
       <form action="" id="formhard">
-        <label for="difficulty">
-          TRY HARD
-        </label>
+        <label for="difficulty"> TRY HARD </label>
         <select name="difficult" id="difficult">
-          <option value="easy">
-            Light
-          </option>
+          <option value="easy">Light</option>
 
-          <option value="medium">
-            Normal
-          </option>
+          <option value="medium">Normal</option>
 
-          <option value="hard">
-            Unreal
-          </option>
+          <option value="hard">Unreal</option>
         </select>
-        <input type="button" value="Start" onclick="changeDifficults()">
+        <input type="button" value="Start" onclick="changeDifficults()" />
       </form>
     </div>
     <div class="score">
-
       <div class="total">
         <h1>Total score:</h1>
         <h2 id="total">0</h2>
@@ -38,8 +29,30 @@
         <h1>Its record</h1>
         <h2 id="record">0</h2>
       </div>
-
     </div>
+<div class="playfield">
+  <div>
+    <h1>Next:</h1>
+    <div class="gridNext">
+    <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+    
     <div class="grid">
       <div id="pos00"></div>
       <div id="pos01"></div>
@@ -242,6 +255,7 @@
       <div id="pos198"></div>
       <div id="pos199"></div>
     </div>
+  </div>
     <script src="./script.js"></script>
   </body>
 </html>
