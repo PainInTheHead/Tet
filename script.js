@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("record").innerText = savedScrore;
 });
 
+window.addEventListener('beforeunload', (event) => {
+  window.scrollTo(0, 0)
+})
+
 function changeDifficults() {
   const selectedElement = document.getElementById("difficult");
   const selectedValue = selectedElement.value;
@@ -153,11 +157,11 @@ class Tetris {
       matrix = allMatrxOfFig[name];
       matrixSize = matrix.length;
       const rotatedMatrix = rotateMatrix(allMatrxOfFig[name]);
+      allMatrxOfFig[name] = rotatedMatrix;
       if (!this.checkOutBorders()) {
-        allMatrxOfFig[name] = allMatrxOfFig[name];
-      } else {
-        allMatrxOfFig[name] = rotatedMatrix;
+        allMatrxOfFig[name] = matrix;
       }
+
     } else {
       name = this.tetobj.name;
       matrixSize = this.tetobj.matrix.length;
@@ -301,6 +305,8 @@ function gameOver() {
   alert("GAME OVER");
   stopDown();
   document.removeEventListener("keydown", swicthKey);
+  location.reload()
+  window.scrollTo(0, 0)
 }
 
 function setNewRecord() {
