@@ -5,7 +5,7 @@ let total = 0;
 let timeUp = 0.7;
 let inputTime;
 let timeOutId;
-
+let requestId
 let record = total;
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -87,13 +87,14 @@ const allMatrxOfFig = {
   ],
 };
 
+
 class Tetris {
+  gameArea;
+  tetArr=[];
+  isGameOver=false;
+  render=false;
+
   constructor() {
-    this.gameArea;
-    this.tetobj;
-    this.tetArr = [];
-    this.isGameOver = false;
-    this.render = false;
     this.generationGameArea();
     this.generationObj();
   }
@@ -105,6 +106,7 @@ class Tetris {
     const nextFigure = getRandomIndex(arrFigName);
     const nextMatrix = allMatrxOfFig[nextFigure];
     const row = -1;
+
     this.tetobj = {
       name,
       matrix,
@@ -118,6 +120,7 @@ class Tetris {
     this.tetArr.push(nextFigure);
     this.calculateGhostPos();
   }
+
   calculateGhostPos() {
     const tetObjRow = this.tetobj.row;
     this.tetobj.row++;
@@ -140,8 +143,8 @@ class Tetris {
   }
 
   dropTetObj() {
-    this.tetobj.row = this.tetobj.ghostRow
-    this.stateTetris()
+    this.tetobj.row = this.tetobj.ghostRow;
+    this.stateTetris();
   }
 
   down() {
@@ -157,19 +160,31 @@ class Tetris {
   left() {
     this.tetobj.column -= 1;
     if (!this.checkOutBorders()) {
-      this.tetobj.column += 1;
+      this.tetobj.column = 8
     } else {
-      this.calculateGhostPos();
+      this.calculateGhostPos()
     }
+    // this.tetobj.column -= 1;
+    // if (!this.checkOutBorders()) {
+    //   this.tetobj.column += 1;
+    // } else {
+    //   this.calculateGhostPos();
+    // }
   }
 
   right() {
     this.tetobj.column += 1;
     if (!this.checkOutBorders()) {
-      this.tetobj.column -= 1;
+      this.tetobj.column = 0
     } else {
-      this.calculateGhostPos();
+      this.calculateGhostPos()
     }
+    // this.tetobj.column += 1;
+    // if (!this.checkOutBorders()) {
+    //   this.tetobj.column -= 1;
+    // } else {
+    //   this.calculateGhostPos();
+    // }
   }
 
   rotate() {
@@ -308,7 +323,7 @@ class Tetris {
     this.gameArea[0] = new Array(10).fill(0);
   }
 }
-
+getPlayTableHtml()
 const tetris = new Tetris();
 console.log(tetris.gameArea);
 
@@ -354,26 +369,26 @@ function setNewRecord() {
   }
 }
 
-let time = 1000;
-
 function startDown() {
-  timeOutId = setTimeout(() => {
-    moveDown();
-  }, inputTime);
+  const startTime = performance.now()
+
+  function animate(currentTime) {
+    const elapsedTime = currentTime - startTime
+
+    if (elapsedTime >= inputTime) {
+      moveDown()
+      startTime = currentTime
+    }
+     requestId = requestAnimationFrame(animate)
+  }
+  requestId = requestAnimationFrame(animate)
 }
 
 function stopDown() {
-  clearTimeout(timeOutId);
+  cancelAnimationFrame(requestId)
 }
 
-setTimeout(() => {
-  startDown = undefined;
-  startDown = function () {
-    timeOutId = setTimeout(() => {
-      moveDown();
-    }, inputTime - 500);
-  };
-}, 10000);
+
 
 function moveLeft() {
   tetris.left();
@@ -435,8 +450,8 @@ function paintInt() {
 }
 
 function moveGhostPos() {
-  tetris.dropTetObj()
-  paint()
+  tetris.dropTetObj();
+  paint();
 }
 
 function paintGhost() {
@@ -533,4 +548,13 @@ function getIndexHtml(r, c) {
 
 function getNextIndexHtml(r, c) {
   return r * 4 + c;
+}
+
+
+function getPlayTableHtml() {
+  const gridTable = document.querySelector('.grid')
+  for(let i = 0; i < 200; i++) {
+    const newCellHtml = document.createElement('div')
+    gridTable.appendChild(newCellHtml)
+  }
 }

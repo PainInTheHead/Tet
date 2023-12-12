@@ -60,7 +60,7 @@ body {
 }
 
 .grid > div.ghost {
-    background-color: rgba(255, 255, 0, 0.9)
+    background-color: rgba(255, 255, 0, 0.7)
 }
 
 .grid > div.T {
@@ -204,3 +204,6 @@ h2 {
     font-size: 100px;
     text-align: center;
   }
+
+
+
